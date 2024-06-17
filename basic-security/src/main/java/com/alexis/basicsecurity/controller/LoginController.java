@@ -24,7 +24,7 @@ public class LoginController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Customer customer){
         Customer savedCustomer = null;
-        ResponseEntity response = null;
+        ResponseEntity<String> response = null;
 
         try{
             customer.setPwd(passwordEncoder.encode(customer.getPwd()));
