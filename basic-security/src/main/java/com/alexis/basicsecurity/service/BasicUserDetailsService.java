@@ -1,4 +1,4 @@
-package com.alexis.basicsecurity.config;
+package com.alexis.basicsecurity.service;
 
 import com.alexis.basicsecurity.model.Customer;
 import com.alexis.basicsecurity.repository.CustomerRepository;
