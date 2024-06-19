@@ -1,6 +1,9 @@
 package com.alexis.basicsecurity.config;
 
+import com.alexis.basicsecurity.filter.AuthoritiesLoggingAfterFilter;
+import com.alexis.basicsecurity.filter.AuthoritiesLoggingAtFilter;
 import com.alexis.basicsecurity.filter.CsrfCookieFilter;
+import com.alexis.basicsecurity.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +48,9 @@ public class ProjectSecurityConfig {
         })).csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact", "/login/*")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                        .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+                        .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+                        .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                         .authorizeHttpRequests((requests)->requests
                         /*.requestMatchers("/account").hasAuthority("VIEWACCOUNT")
                         .requestMatchers("/balance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
