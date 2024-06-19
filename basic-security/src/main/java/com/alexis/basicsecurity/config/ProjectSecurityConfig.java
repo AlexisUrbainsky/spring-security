@@ -45,16 +45,16 @@ public class ProjectSecurityConfig {
         })).csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact", "/login/*")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-                .authorizeHttpRequests((requests)->requests
-                        /*.requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
-                        .requestMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
-                        .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
-                        .requestMatchers("/myCards").hasAuthority("VIEWCARDS")*/
-                        .requestMatchers("/myAccount").hasRole("USER")
-                        .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/myLoans").hasRole("USER")
-                        .requestMatchers("/myCards").hasRole("USER")
-                        .requestMatchers("/user").authenticated()
+                        .authorizeHttpRequests((requests)->requests
+                        /*.requestMatchers("/account").hasAuthority("VIEWACCOUNT")
+                        .requestMatchers("/balance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
+                        .requestMatchers("/loans").hasAuthority("VIEWLOANS")
+                        .requestMatchers("/cards").hasAuthority("VIEWCARDS")*/
+                        .requestMatchers("/account").hasRole("USER")
+                        .requestMatchers("/balance").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/loans").hasRole("USER")
+                        .requestMatchers("/cards").hasRole("XUSER")
+                        //.requestMatchers("/user").authenticated()
                 .requestMatchers("/notices","/contact","/login/*").permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());

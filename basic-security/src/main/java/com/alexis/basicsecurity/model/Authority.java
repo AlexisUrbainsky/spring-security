@@ -1,6 +1,7 @@
 package com.alexis.basicsecurity.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -17,6 +18,7 @@ public class Authority {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
 
     public Long getId() {
         return id;
@@ -41,5 +43,4 @@ public class Authority {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-
 }
