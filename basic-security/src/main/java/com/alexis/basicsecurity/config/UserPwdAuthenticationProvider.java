@@ -1,5 +1,6 @@
 package com.alexis.basicsecurity.config;
 
+import com.alexis.basicsecurity.model.Authority;
 import com.alexis.basicsecurity.model.Customer;
 import com.alexis.basicsecurity.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 public class UserPwdAuthenticationProvider implements AuthenticationProvider {
@@ -35,15 +37,21 @@ public class UserPwdAuthenticationProvider implements AuthenticationProvider {
 
         if (!customer.isEmpty()) {
             if(passwordEncoder.matches(pwd, customer.get().getPwd())){
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(customer.get().getRole()));
-                return new UsernamePasswordAuthenticationToken(userName,pwd,authorities);
+                return new UsernamePasswordAuthenticationToken(userName,pwd, getGrantedAuthorities(customer.get().getAuthorities()));
             }else{
                 throw new BadCredentialsException("Invalid Password");
             }
         } else{
-            throw new UsernameNotFoundException(" No User registered with this details ");
+            throw new UsernameNotFoundException("No User registered with this details ");
         }
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for (Authority authority : authorities) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
+        }
+        return grantedAuthorities;
     }
 
     @Override

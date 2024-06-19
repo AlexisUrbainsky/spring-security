@@ -1,11 +1,9 @@
 package com.alexis.basicsecurity.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
-
+import java.util.Set;
 
 @Data
 @Entity
@@ -18,6 +16,8 @@ public class Customer {
     private int id;
     private String pwd;
     private String email;
-    private String role;
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+    private Set<Authority> authorities;
 
 }
